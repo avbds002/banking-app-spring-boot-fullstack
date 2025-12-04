@@ -1,5 +1,6 @@
 package com.impactsoft.bankingapp.entities;
 
+import com.impactsoft.bankingapp.entities.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,37 +21,35 @@ import java.util.Objects;
 public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    //enum
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private TransactionType type;
 
-    @Column(name = "value", nullable = false)
-    private BigDecimal value;
+    @Column(nullable = false, precision = 15, scale = 2)
+    private BigDecimal amount;
 
-    @Column(name = "hour_date", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime hourDate;
 
-    @Column(name = "source_account", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "source_account_id", nullable = false)
     private BankAccount sourceAccount;
 
-    @Column(name = "destination_account", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "destination_account_id")
     private BankAccount destinationAccount;
 
-    @Column(name = "description")
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "created_by")
     private String createdBy;
 
-    @Column(name = "updated_by")
     private String updatedBy;
 
     @Override
@@ -70,7 +69,7 @@ public class Transaction implements Serializable {
         return "Transaction{" +
                 "id=" + id +
                 ", type=" + type +
-                ", value=" + value +
+                ", amount=" + amount +
                 ", hourDate=" + hourDate +
                 ", sourceAccount=" + sourceAccount +
                 ", destinationAccount=" + destinationAccount +

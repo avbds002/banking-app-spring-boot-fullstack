@@ -1,5 +1,6 @@
 package com.impactsoft.bankingapp.entities;
 
+import com.impactsoft.bankingapp.entities.enums.AccountType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -20,38 +23,57 @@ import java.util.Objects;
 public class BankAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "account_number", nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 20)
     private String accountNumber;
 
-    @Column(name = "branch", nullable = false, unique = true)
+    @Column(nullable = false, length = 10)  // Removido unique = true (várias contas podem ter mesma agência)
     private String branch;
 
-    //enum
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private AccountType type;
 
-    @Column(name = "balance", nullable = false)
-    private BigDecimal balance;
+    @Column(nullable = false, precision = 15, scale = 2)
+    private BigDecimal balance = BigDecimal.ZERO;
 
-    @Column(name = "holder", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)  // Removido unique = true
     private User holder;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(nullable = false)
+    private Boolean isActive = true;
 
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "created_by")
     private String createdBy;
 
-    @Column(name = "updated_by")
     private String updatedBy;
+
+    @OneToMany(
+            mappedBy = "sourceAccount",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private List<Transaction> transactionListSrc = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "destinationAccount",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<Transaction> transactionListDst = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "bankAccount",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private List<Wallet> walletList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

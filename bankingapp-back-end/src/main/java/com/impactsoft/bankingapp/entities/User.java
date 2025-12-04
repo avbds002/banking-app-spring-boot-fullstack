@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
@@ -16,23 +18,27 @@ import java.util.Objects;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "cpf", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String cpf;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String password;
 
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    private String createdBy;
+
+    private String updatedBy;
+
+    @OneToMany(mappedBy = "holder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BankAccount> bankAccountList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
