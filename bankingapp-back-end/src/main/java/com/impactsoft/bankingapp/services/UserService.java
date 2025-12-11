@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -31,10 +32,23 @@ public class UserService {
 
     @Transactional
     public UserDTO insert(UserDTO userDto) {
-        User entity = new User();
-        copyDtoToEntity(userDto, entity);
-        entity = userRepository.save(entity);
-        return new UserDTO(entity);
+        User user = new User();
+        copyDtoToEntity(userDto, user);
+        user = userRepository.save(user);
+        return new UserDTO(user);
+    }
+
+    @Transactional
+    public UserDTO update(Long id, UserDTO userDto) {
+        User user = userRepository.getReferenceById(id);
+        copyDtoToEntity(userDto, user);
+        user = userRepository.save(user);
+        return new UserDTO(user);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+        userRepository.deleteById(id);
     }
 
 
