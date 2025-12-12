@@ -1,7 +1,7 @@
 package com.impactsoft.bankingapp.services;
 
 import com.impactsoft.bankingapp.entities.User;
-import com.impactsoft.bankingapp.entities.dto.UserDTO;
+import com.impactsoft.bankingapp.entities.dto.userDtos.UserDTO;
 import com.impactsoft.bankingapp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,6 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    /*
+    * User features and methods
+    * 1) login(email: String, password: String)
+    * 2) logout(): void
+    * 3) changePassword(currentPassword: String, newPassword: String): boolean
+    * 4) validateCredentials(): boolean
+    * */
 
     private final UserRepository userRepository;
 
@@ -39,6 +47,7 @@ public class UserService {
     }
 
     @Transactional
+    //Complete user update
     public UserDTO update(Long id, UserDTO userDto) {
         User user = userRepository.getReferenceById(id);
         copyDtoToEntity(userDto, user);
@@ -50,7 +59,6 @@ public class UserService {
     public void delete(Long id) {
         userRepository.deleteById(id);
     }
-
 
     private void copyDtoToEntity(UserDTO userDto, User entity) {
         entity.setCpf(userDto.getCpf());

@@ -1,24 +1,29 @@
-package com.impactsoft.bankingapp.entities.dto;
+package com.impactsoft.bankingapp.entities.dto.userDtos;
 
 import com.impactsoft.bankingapp.entities.User;
 
 public class UserDTO {
+    private Long id;
     private String cpf;
     private String email;
     private String password;
 
-    public UserDTO() {}
-
-    public UserDTO(String cpf, String email, String password) {
+    public UserDTO(Long id, String cpf, String email, String password) {
+        this.id = id;
         this.cpf = cpf;
         this.email = email;
         this.password = password;
     }
 
     public UserDTO(User entity) {
+        id = entity.getId();
         cpf = entity.getCpf();
         email = entity.getEmail();
         password = entity.getPassword();
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getCpf() {
