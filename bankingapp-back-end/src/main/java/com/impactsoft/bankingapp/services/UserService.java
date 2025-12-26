@@ -2,7 +2,9 @@ package com.impactsoft.bankingapp.services;
 
 import com.impactsoft.bankingapp.entities.User;
 import com.impactsoft.bankingapp.entities.dto.userDtos.UserDTO;
+import com.impactsoft.bankingapp.entities.dto.userDtos.UserPasswordDTO;
 import com.impactsoft.bankingapp.repositories.UserRepository;
+import com.impactsoft.bankingapp.services.exceptions.InvalidPasswordException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,6 +55,19 @@ public class UserService {
         copyDtoToEntity(userDto, user);
         user = userRepository.save(user);
         return new UserDTO(user);
+    }
+
+    @Transactional
+    public UserPasswordDTO updatePassword(Long id, String currentPassword, String newPassword, String confirmPassword) {
+        User user = userRepository.getReferenceById(id);
+
+        if (!newPassword.equals(confirmPassword)) {
+            throw new InvalidPasswordException("Passwords doesn't match!");
+        }
+
+        user.setPassword(newPassword);
+
+        return new UserPasswordDTO(user);
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)

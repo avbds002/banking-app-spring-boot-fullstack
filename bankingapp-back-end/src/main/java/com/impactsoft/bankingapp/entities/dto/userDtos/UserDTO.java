@@ -8,6 +8,8 @@ public class UserDTO {
     private String email;
     private String password;
 
+    public UserDTO() {}
+
     public UserDTO(Long id, String cpf, String email, String password) {
         this.id = id;
         this.cpf = cpf;

@@ -1,6 +1,7 @@
 package com.impactsoft.bankingapp.controllers;
 
 import com.impactsoft.bankingapp.entities.dto.userDtos.UserDTO;
+import com.impactsoft.bankingapp.entities.dto.userDtos.UserPasswordDTO;
 import com.impactsoft.bankingapp.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,12 @@ public class UserController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserDTO userDto) {
         userDto = userService.update(id, userDto);
+        return ResponseEntity.ok(userDto);
+    }
+
+    @PutMapping(value = "/{id}/updatePassword")
+    public ResponseEntity<UserPasswordDTO> updatePassword(@PathVariable Long id, @RequestBody UserPasswordDTO userDto) {
+        userDto = userService.updatePassword(id, userDto.getCurrentPassword(), userDto.getNewPassword(), userDto.getConfirmPassword());
         return ResponseEntity.ok(userDto);
     }
 

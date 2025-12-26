@@ -8,9 +8,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 @Entity
@@ -26,7 +24,7 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String password;
 
     private LocalDateTime createdAt;
@@ -38,7 +36,7 @@ public class User implements Serializable {
     private String updatedBy;
 
     @OneToMany(mappedBy = "holder", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BankAccount> bankAccountList = new ArrayList<>();
+    private Set<BankAccount> bankAccountList = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
