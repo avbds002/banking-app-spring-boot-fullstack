@@ -23,5 +23,6 @@ public class BankAccountService {
         entity.setAccountNumber(bankAccountDto.getAccountNumber());
         entity.setBranch(bankAccountDto.getBranch());
         entity.setType(bankAccountDto.getType());
+        entity.setHolder(bankAccountDto.getHolder());
     }
 }

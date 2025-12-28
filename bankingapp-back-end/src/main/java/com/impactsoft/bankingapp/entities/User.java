@@ -1,5 +1,6 @@
 package com.impactsoft.bankingapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,6 +36,7 @@ public class User implements Serializable {
 
     private String updatedBy;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "holder", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<BankAccount> bankAccountList = new HashSet<>();
 

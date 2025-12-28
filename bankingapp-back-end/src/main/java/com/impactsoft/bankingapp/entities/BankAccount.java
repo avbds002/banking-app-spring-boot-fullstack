@@ -1,5 +1,6 @@
 package com.impactsoft.bankingapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.impactsoft.bankingapp.entities.enums.AccountType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,7 @@ public class BankAccount implements Serializable {
     private BigDecimal balance = BigDecimal.ZERO;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "user_id", nullable = false)  // Removido unique = true
     private User holder;
 
