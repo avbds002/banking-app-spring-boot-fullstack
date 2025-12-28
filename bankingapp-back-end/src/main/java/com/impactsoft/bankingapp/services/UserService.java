@@ -20,7 +20,7 @@ public class UserService {
     * User features and methods
     * 1) login(email: String, password: String)
     * 2) logout(): void
-    * 3) changePassword(currentPassword: String, newPassword: String): boolean
+    * 3) changePassword(currentPassword: String, newPassword: String): boolean (OK)
     * 4) validateCredentials(): boolean
     * */
 

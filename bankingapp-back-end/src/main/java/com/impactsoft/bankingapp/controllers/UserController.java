@@ -45,9 +45,9 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}/updatePassword")
-    public ResponseEntity<UserPasswordDTO> updatePassword(@PathVariable Long id, @RequestBody UserPasswordDTO userDto) {
+    public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody UserPasswordDTO userDto) {
         userDto = userService.updatePassword(id, userDto.getCurrentPassword(), userDto.getNewPassword(), userDto.getConfirmPassword());
-        return ResponseEntity.ok(userDto);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(value = "/{id}")
